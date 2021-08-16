@@ -1151,8 +1151,9 @@ then
     echo -e "`date` Peak calling using SPP..\n" >> ${log_file}
     
     # Call peaks using SPP
-    R --vanilla < ${bin_dir}/util/scripts/spp.R --args ${run}.for.BROWSER.bam \
-        ${input_control} ${bin_dir} ${z_thresh}
+    module load singularity
+    singularity exec ${spp_dir}/r-spp_1.13.sif Rscript ${spp_dir}/spp_sumner.R ${run}.for.BROWSER.bam ${input_control} . ${z_thresh}
+    # R --vanilla < ${bin_dir}/util/scripts/spp.R --args ${run}.for.BROWSER.bam ${input_control} ${bin_dir} ${z_thresh}
 else
     # Report MACS2 to log file
     echo -e "`date` Peak calling using MACS2..\n" >> ${log_file}
