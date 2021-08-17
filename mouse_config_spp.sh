@@ -139,4 +139,5 @@ hybrid="none"
 # module load samtools/1.5
 # module load R/3.2.1
 # module load MACS/2.1.0.20151222
+PYTHONPATH="/projects/li-lab/agarwa/CUBE/DeepTact/code/ChIA-PIPE/dep_dir/anaconda2"
 ###
