@@ -4,7 +4,7 @@
 
 # The name of the sequencing run
 # Unique identifier for the library being processed
-run="mouse"
+run="mouse_test"
 
 # Experiment type
 #   "ChIA-PET"
@@ -28,11 +28,11 @@ cell_type="ESE14"
 data_dir="../fastq"
 
 # The names of the FASTQ files
-r1_fastq="SRR975157_mouse_ES_E14_ChIA-PET_rep1_1.fastq"
-r2_fastq="SRR975157_mouse_ES_E14_ChIA-PET_rep1_2.fastq"
+# r1_fastq="SRR975157_mouse_ES_E14_ChIA-PET_rep1_1.fastq"
+# r2_fastq="SRR975157_mouse_ES_E14_ChIA-PET_rep1_2.fastq"
 
-# r1_fastq="test_rep1_1.fastq"
-# r2_fastq="test_rep1_2.fastq"
+r1_fastq="test_rep1_1.fastq"
+r2_fastq="test_rep1_2.fastq"
 
 
 ### 2) Dependency information
