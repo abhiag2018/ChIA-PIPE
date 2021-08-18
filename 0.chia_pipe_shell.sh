@@ -29,44 +29,48 @@ done
 
 step1.sh -c ${conf}
 
-step2a.sh -c ${conf}
-step2b.sh -c ${conf}
-step2c.sh -c ${conf}
-step2d.sh -c ${conf}
-step2e.sh -c ${conf}
-step2f.sh -c ${conf}
-step2g.sh -c ${conf}
+step2.sh -c ${conf} -t none -m 30 -s UU
+step2.sh -c ${conf} -t singlelinker.single -m 10 -s UxxU
+step2.sh -c ${conf} -t halflinker -m 30 -s UxxU
+step2.sh -c ${conf} -t singlelinker.paired -m 30 -s UU
+step2.sh -c ${conf} -t fulllinker.chimeric.single -m 30 -s UxxU
+step2.sh -c ${conf} -t fulllinker.chimeric.paired -m 30 -s UxxU
+step2.sh -c ${conf} -t FullLinker.NonChimeric.single -m 30 -s xx
+step2.sh -c ${conf} -t FullLinker.NonChimeric.paired -m 30 -s UxxU -p
 
 step3.sh -c ${conf}
+
 step4.sh -c ${conf}
+
 step5.sh -c ${conf}
 
 
 ####### Debugging Commands
 
-# run stepNN in sbatch 
-# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 stepNN.sh -c mouse_config_test.sh
 
-# move output of steps 
+## move output of steps 
 # mkdir stepNN
 # mv *.* stepNN/
 
-# remove symboliv links
+## remove symbolic links
 # find -type l -delete
 
-# create links for all files inside stepNN directory  
+## create links for all files inside stepNN directory  
 # ln -s stepNN/* .
 
-# find all files at depth 1 
+## find all files at depth 1 
 # find -maxdepth 1 -type f
 
+## run stepNN in sbatch 
+## sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 stepNN.sh -c mouse_config_test.sh
 # sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step1.sh -c mouse_config_test.sh
 
-# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2a.sh -c mouse_config_test.sh
-# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2b.sh -c mouse_config_test.sh
-# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2c.sh -c mouse_config_test.sh
-# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2d.sh -c mouse_config_test.sh
-# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2e.sh -c mouse_config_test.sh
-# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2f.sh -c mouse_config_test.sh
+# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2.sh -c mouse_config_test.sh -t none -m 30 -s UU 
+# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2.sh -c mouse_config_test.sh -t singlelinker.single -m 10 -s UxxU 
+# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2.sh -c mouse_config_test.sh -t singlelinker.paired -m 30 -s UU 
+# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2.sh -c mouse_config_test.sh -t fulllinker.chimeric.single -m 30 -s UxxU 
+# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2.sh -c mouse_config_test.sh -t fulllinker.chimeric.paired -m 30 -s UxxU 
+# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2.sh -c mouse_config_test.sh -t FullLinker.NonChimeric.single -m 30 -s xx 
+# sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step2.sh -c mouse_config_test.sh -t FullLinker.NonChimeric.paired -m 30 -s UxxU -p 
 
 # sbatch -q batch -N 1 -n 8 --mem 40G -t 0-10:00 step3.sh -c mouse_config_test.sh

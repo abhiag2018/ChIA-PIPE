@@ -1,13 +1,14 @@
 #!/bin/bash
 
+
 source init.sh
 
-##############
-############### 2e. Map "fulllinker, chimeric, two tag" reads
+###############
+############### 2.
 
-tag_name="fulllinker.chimeric.paired"
-map_qual=30
-suffix="UxxU"
+# tag_name="none"
+# map_qual=30
+# suffix="UU"
 
 ## Create name of the log file
 log_file=2.${run}.map_${tag_name}.log
@@ -99,3 +100,43 @@ ${main_prog} span -t ${n_thread} -s ${self_bp} \
 # Report non-redundant span computation completion
 echo -e "`date` --- ENDED ${run} cpu dedup span ---\n" >> ${log_file}
 
+
+
+if [[ "$pairing" == "true" ]]; then
+    # Cluster tags using 500bp extension 
+    echo -e "`date` --- STARTED ${run} clustering with ${extbp} bp"\
+        "extension from each side --- \n" >> ${log_file}
+
+    ${main_prog} cluster -m -s ${self_bp} -B 1000 -5 5,0 -3 3,${exten_bp} \
+        -t ${n_thread} -j -x -v 1 -g  -O ${run}.e500 \
+        ${run}.${tag_name}.${suffix}.nr.bam 1>> ${log_file} 2>> ${log_file}
+
+    echo -e "`date` --- ENDED ${run} cpu clustering --- \n" >> ${log_file}
+
+
+    # Rename loop files appropriately
+    mv ${run}.e500.clusters.cis.chiasig.gz ${run}.e500.clusters.cis.gz
+    mv ${run}.e500.clusters.trans.chiasig.gz ${run}.e500.clusters.trans.gz
+
+    # Make subset file with intrachrom loops with PET_count >= 2
+    # for browsing in Excel
+    cis_file="${run}.e500.clusters.cis.gz"
+    be3_file="${run}.e500.clusters.cis.BE3"
+    zcat ${cis_file} | awk '{ if ( $7 >= 3 ) print }' > ${be3_file}
+
+
+    ### Make .hic file for Juicebox
+    ### BAM --> pairs --> hic
+    # BAM to pairs
+    paired_tag_bam="${run}.${tag_name}.${suffix}.nr.bam"
+    ${bin_dir}/util/pairix_src/util/bam2pairs/bam2pairs -c ${chrom_sizes} \
+        ${paired_tag_bam} ${run}
+
+    # Pairs to .hic
+    juicer="${bin_dir}/util/juicer_tools.1.7.5_linux_x64_jcuda.0.8.jar"
+    hic_file="ChIA-PET_${genome}_${cell_type}_${ip_factor}_${run}_${run_type}_pairs.hic"
+
+    java -Xmx2g -jar ${juicer} pre -r \
+        2500000,1000000,500000,250000,100000,50000,25000,10000,5000,1000 \
+        ${run}.bsorted.pairs.gz ${hic_file} ${chrom_sizes}
+fi
